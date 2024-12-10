@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        //Kdor Thom
         Scanner input = new Scanner(System.in);
         int rows, cols,options;
         String seatCode;

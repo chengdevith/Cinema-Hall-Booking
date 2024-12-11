@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -7,6 +8,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
         int rows, cols,options;
         String seatCode;
+        String[] multiSeatsCode;
         String[] seats;
         char c ='A';
         System.out.println("Enter the number of Seats");
@@ -45,33 +47,72 @@ public class Main {
             options = input.nextInt();
             switch (options) {
                 case 1:{
-                    System.out.println("Enter the seat code to booking the seat: ");
-                    input.nextLine();
-                    seatCode = input.nextLine();
-                    boolean isFound = false;
+                    System.out.println("1.Booking single seat");
+                    System.out.println("2.Booking multiple seat");
+                    System.out.println("Choose an option: ");
+                    options = input.nextInt();
+                    switch (options) {
+                        case 1:{
+                            System.out.println("Enter the seat code to booking single seat: ");
+                            input.nextLine();
+                            seatCode = input.nextLine();
+                            boolean isFound = false;
 
-                    for (int i = 0; i < rows; i++) {
-                        for (int j = 0; j < cols; j++) {
-                            seats = hall[i][j].split(":");
-                            if (seatCode.equals(seats[0])) {
-                                if (seats[1].trim().equals("AV")) {
-                                    isFound = true;
-                                    hall[i][j] = seats[0] +": BO";
+                            for (int i = 0; i < rows; i++) {
+                                for (int j = 0; j < cols; j++) {
+                                    seats = hall[i][j].split(":");
+                                    if (seatCode.equals(seats[0])) {
+                                        if (seats[1].trim().equals("AV")) {
+                                            isFound = true;
+                                            hall[i][j] = seats[0] +": BO";
 
-                                    LocalDateTime now = LocalDateTime.now();
-                                    String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                                    bookingHistory[bookingCount][0] =seats[0];
-                                    bookingHistory[bookingCount][1] =formattedDate;
-                                    bookingCount++;
+                                            LocalDateTime now = LocalDateTime.now();
+                                            String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                                            bookingHistory[bookingCount][0] =seats[0];
+                                            bookingHistory[bookingCount][1] =formattedDate;
+                                            bookingCount++;
 
-                                    System.out.println("Seat " + seats[0] + " successfully booked. ");
+                                            System.out.println("Seat " + seats[0] + " successfully booked. ");
 
+                                        }
+                                    }
                                 }
                             }
+                            if(!isFound){
+                                System.out.println("Invalid Seat Code");
+                            }
+                            break;
                         }
-                    }
-                    if(!isFound){
-                        System.out.println("Invalid Seat Code");
+                        case 2:{
+                            System.out.println("Enter the seats code to booking multiple seats");
+                            input.nextLine();
+                            seatCode = input.nextLine();
+                            boolean isFound = false;
+                            for (int i = 0; i < rows; i++) {
+                                for (int j = 0; j < cols; j++) {
+                                    seats = hall[i][j].split(":");
+                                    multiSeatsCode =seatCode.split(",");
+                                    for (int k = 0; k < multiSeatsCode.length; k++) {
+                                        if (seats[0].equals(multiSeatsCode[k])) {
+                                            if (seats[1].trim().equals("AV")) {
+                                                isFound = true;
+                                                hall[i][j] = seats[0] +": BO";
+                                                LocalDateTime now = LocalDateTime.now();
+                                                String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                                                bookingHistory[bookingCount][0] =seats[0];
+                                                bookingHistory[bookingCount][1] =formattedDate;
+                                                bookingCount++;
+
+                                                System.out.println("Seat " + seats[0] + " successfully booked. ");
+                                            }
+                                        }
+                                    }
+                                }
+                            }if (!isFound){
+                                System.out.println("Invalid Seat Code");
+                            }
+                            break;
+                        }
                     }
                     break;
                 }
